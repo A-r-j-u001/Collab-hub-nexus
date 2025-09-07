@@ -47,6 +47,27 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // Module-specific colors
+        meeting: {
+          DEFAULT: "hsl(var(--meeting-primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        social: {
+          DEFAULT: "hsl(var(--social-primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        content: {
+          DEFAULT: "hsl(var(--content-primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        notes: {
+          DEFAULT: "hsl(var(--notes-primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        todo: {
+          DEFAULT: "hsl(var(--todo-primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -57,6 +78,20 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+      },
+      backgroundImage: {
+        'gradient-primary': 'var(--gradient-primary)',
+        'gradient-secondary': 'var(--gradient-secondary)',
+        'gradient-accent': 'var(--gradient-accent)',
+      },
+      boxShadow: {
+        'soft': 'var(--shadow-soft)',
+        'medium': 'var(--shadow-medium)',
+        'large': 'var(--shadow-large)',
+      },
+      transitionTimingFunction: {
+        'smooth': 'var(--transition-smooth)',
+        'bounce': 'var(--transition-bounce)',
       },
       borderRadius: {
         lg: "var(--radius)",

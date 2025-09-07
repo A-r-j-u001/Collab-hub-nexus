@@ -8,110 +8,107 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 250 250% 99%;
-    --foreground: 224 71% 4%;
+    --background: 162 71% 97%;
+    --foreground: 215 11% 25%;
 
     --card: 0 0% 100%;
-    --card-foreground: 224 71% 4%;
+    --card-foreground: 215 11% 25%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 224 71% 4%;
+    --popover-foreground: 215 11% 25%;
 
-    --primary: 262 83% 58%;
-    --primary-foreground: 210 20% 98%;
+    --primary: 135 100% 47%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 14% 96%;
-    --secondary-foreground: 220 9% 46%;
+    --secondary: 162 71% 94%;
+    --secondary-foreground: 215 11% 41%;
 
-    --muted: 220 14% 96%;
-    --muted-foreground: 220 9% 46%;
+    --muted: 203 100% 96%;
+    --muted-foreground: 215 11% 41%;
 
-    --accent: 220 14% 96%;
-    --accent-foreground: 220 9% 46%;
+    --accent: 203 100% 91%;
+    --accent-foreground: 215 11% 25%;
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 210 20% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 262 83% 58%;
+    --border: 203 100% 88%;
+    --input: 203 100% 88%;
+    --ring: 135 100% 47%;
 
-    --radius: 0.75rem;
+    --radius: 0.875rem;
 
-    /* Custom design tokens */
-    --gradient-primary: linear-gradient(135deg, hsl(262 83% 58%), hsl(291 64% 42%));
-    --gradient-secondary: linear-gradient(135deg, hsl(220 14% 96%), hsl(210 20% 98%));
-    --gradient-accent: linear-gradient(135deg, hsl(142 76% 36%), hsl(158 64% 52%));
+    /* Professional design tokens */
+    --gradient-primary: linear-gradient(135deg, hsl(135 100% 47%), hsl(142 76% 36%));
+    --gradient-secondary: linear-gradient(135deg, hsl(162 71% 94%), hsl(203 100% 91%));
+    --gradient-accent: linear-gradient(135deg, hsl(203 100% 91%), hsl(162 71% 94%));
+    --gradient-professional: linear-gradient(135deg, hsl(215 11% 41%), hsl(215 11% 25%));
     
-    --meeting-primary: 220 91% 58%;
-    --social-primary: 142 76% 36%;
-    --content-primary: 291 64% 42%;
-    --notes-primary: 35 91% 62%;
-    --todo-primary: 4 90% 58%;
+    --meeting-primary: 203 100% 85%;
+    --social-primary: 135 100% 47%;
+    --content-primary: 162 71% 80%;
+    --notes-primary: 203 100% 91%;
+    --todo-primary: 135 85% 55%;
 
-    --glass-bg: 0 0% 100% / 0.8;
-    --glass-border: 220 13% 91% / 0.2;
+    --glass-bg: 162 71% 97% / 0.85;
+    --glass-border: 203 100% 88% / 0.3;
     
-    --shadow-soft: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --shadow-medium: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-    --shadow-large: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+    --shadow-soft: 0 4px 6px -1px hsl(215 11% 25% / 0.1), 0 2px 4px -2px hsl(215 11% 25% / 0.06);
+    --shadow-medium: 0 10px 15px -3px hsl(215 11% 25% / 0.12), 0 4px 6px -4px hsl(215 11% 25% / 0.08);
+    --shadow-large: 0 25px 50px -12px hsl(215 11% 25% / 0.2);
+    --shadow-professional: 0 8px 32px -4px hsl(135 100% 47% / 0.15);
 
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --transition-professional: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 162 71% 97%;
+    --sidebar-foreground: 215 11% 25%;
+    --sidebar-primary: 135 100% 47%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 203 100% 91%;
+    --sidebar-accent-foreground: 215 11% 25%;
+    --sidebar-border: 203 100% 88%;
+    --sidebar-ring: 135 100% 47%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 215 11% 8%;
+    --foreground: 162 71% 94%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 215 11% 12%;
+    --card-foreground: 162 71% 94%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 215 11% 12%;
+    --popover-foreground: 162 71% 94%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 135 100% 47%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 215 11% 18%;
+    --secondary-foreground: 162 71% 90%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 215 11% 15%;
+    --muted-foreground: 215 11% 65%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 203 100% 20%;
+    --accent-foreground: 203 100% 91%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 50%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --border: 215 11% 18%;
+    --input: 215 11% 18%;
+    --ring: 135 100% 47%;
+    
+    --sidebar-background: 215 11% 10%;
+    --sidebar-foreground: 162 71% 90%;
+    --sidebar-primary: 135 100% 47%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 215 11% 15%;
+    --sidebar-accent-foreground: 162 71% 90%;
+    --sidebar-border: 215 11% 18%;
+    --sidebar-ring: 135 100% 47%;
   }
 }
 

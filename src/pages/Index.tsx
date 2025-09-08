@@ -144,7 +144,7 @@ const Index = () => {
       {/* CTA Section */}
       <section className="py-20 px-4">
         <div className="container mx-auto text-center">
-          <div className="bg-gradient-primary rounded-3xl p-12 text-white">
+          <div className="bg-gradient-primary rounded-3xl p-8 sm:p-12 text-white text-center flex flex-col items-center">
             <h2 className="text-4xl font-bold mb-4">Ready to Transform Your Workflow?</h2>
             <p className="text-xl mb-8 opacity-90">
               Join thousands of teams already using CollabHub to work smarter, not harder.

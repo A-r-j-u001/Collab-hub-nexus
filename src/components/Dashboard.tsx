@@ -134,7 +134,7 @@ const Dashboard = ({ onBack }: DashboardProps) => {
                 <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
                   <Video className="w-5 h-5 text-white" />
                 </div>
-                <h1 className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+                <h1 className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent truncate">
                   CollabHub Dashboard
                 </h1>
               </div>

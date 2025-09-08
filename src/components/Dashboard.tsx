@@ -159,7 +159,33 @@ const Dashboard = ({ onBack }: DashboardProps) => {
           </div>
           
           {/* Navigation Tabs */}
-          <div className="mt-4 overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+          {/* Mobile: collapsed dropdown */}
+          <div className="sm:hidden mt-4">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="w-full justify-between">
+                  <span className="flex items-center">
+                    <Menu className="w-4 h-4 mr-2" />
+                    Sections
+                  </span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem onSelect={() => setActiveModule('overview')}>Overview</DropdownMenuItem>
+                {modules.map((module) => (
+                  <DropdownMenuItem key={module.id} onSelect={() => setActiveModule(module.id as ModuleType)}>
+                    <div className="flex items-center">
+                      <module.icon className="w-4 h-4 mr-2" />
+                      <span>{module.name}</span>
+                    </div>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+
+          {/* Desktop: horizontal tabs */}
+          <div className="hidden sm:block mt-4 overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
             <div className="flex items-center space-x-1 whitespace-nowrap">
               <Button
                 variant={activeModule === 'overview' ? 'default' : 'ghost'}

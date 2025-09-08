@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Video, FileText, Users, Upload, CheckSquare, Calendar, Bell, Search, Settings } from "lucide-react";
+import { ArrowLeft, Video, FileText, Users, Upload, CheckSquare, Calendar, Bell, Search, Settings, Menu } from "lucide-react";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import MeetingModule from "@/components/modules/MeetingModule";
 import NotesModule from "@/components/modules/NotesModule";
@@ -124,17 +125,17 @@ const Dashboard = ({ onBack }: DashboardProps) => {
       {/* Header */}
       <header className="border-b bg-card/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between flex-wrap">
             <div className="flex items-center space-x-4">
               <Button variant="ghost" size="sm" onClick={onBack}>
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back
               </Button>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 min-w-0">
                 <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
                   <Video className="w-5 h-5 text-white" />
                 </div>
-                <h1 className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+                <h1 className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent truncate">
                   CollabHub Dashboard
                 </h1>
               </div>
@@ -158,27 +159,55 @@ const Dashboard = ({ onBack }: DashboardProps) => {
           </div>
           
           {/* Navigation Tabs */}
-          <div className="flex items-center space-x-1 mt-4">
-            <Button
-              variant={activeModule === 'overview' ? 'default' : 'ghost'}
-              size="sm"
-              onClick={() => setActiveModule('overview')}
-              className={activeModule === 'overview' ? 'bg-gradient-primary text-white' : ''}
-            >
-              Overview
-            </Button>
-            {modules.map((module) => (
+          {/* Mobile: collapsed dropdown */}
+          <div className="sm:hidden mt-4">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="w-full justify-between">
+                  <span className="flex items-center">
+                    <Menu className="w-4 h-4 mr-2" />
+                    Sections
+                  </span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem onSelect={() => setActiveModule('overview')}>Overview</DropdownMenuItem>
+                {modules.map((module) => (
+                  <DropdownMenuItem key={module.id} onSelect={() => setActiveModule(module.id as ModuleType)}>
+                    <div className="flex items-center">
+                      <module.icon className="w-4 h-4 mr-2" />
+                      <span>{module.name}</span>
+                    </div>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+
+          {/* Desktop: horizontal tabs */}
+          <div className="hidden sm:block mt-4 overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+            <div className="flex items-center space-x-1 whitespace-nowrap">
               <Button
-                key={module.id}
-                variant={activeModule === module.id ? 'default' : 'ghost'}
+                variant={activeModule === 'overview' ? 'default' : 'ghost'}
                 size="sm"
-                onClick={() => setActiveModule(module.id as ModuleType)}
-                className={`${activeModule === module.id ? `bg-${module.color} text-white` : ''} transition-all duration-200`}
+                onClick={() => setActiveModule('overview')}
+                className={`${activeModule === 'overview' ? 'bg-gradient-primary text-white' : ''} whitespace-nowrap`}
               >
-                <module.icon className="w-4 h-4 mr-2" />
-                {module.name}
+                Overview
               </Button>
-            ))}
+              {modules.map((module) => (
+                <Button
+                  key={module.id}
+                  variant={activeModule === module.id ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => setActiveModule(module.id as ModuleType)}
+                  className={`${activeModule === module.id ? `bg-${module.color} text-white` : ''} transition-all duration-200 whitespace-nowrap`}
+                >
+                  <module.icon className="w-4 h-4 mr-2" />
+                  {module.name}
+                </Button>
+              ))}
+            </div>
           </div>
         </div>
       </header>

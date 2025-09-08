@@ -158,27 +158,29 @@ const Dashboard = ({ onBack }: DashboardProps) => {
           </div>
           
           {/* Navigation Tabs */}
-          <div className="flex items-center space-x-1 mt-4">
-            <Button
-              variant={activeModule === 'overview' ? 'default' : 'ghost'}
-              size="sm"
-              onClick={() => setActiveModule('overview')}
-              className={activeModule === 'overview' ? 'bg-gradient-primary text-white' : ''}
-            >
-              Overview
-            </Button>
-            {modules.map((module) => (
+          <div className="mt-4 overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+            <div className="flex items-center space-x-1 whitespace-nowrap">
               <Button
-                key={module.id}
-                variant={activeModule === module.id ? 'default' : 'ghost'}
+                variant={activeModule === 'overview' ? 'default' : 'ghost'}
                 size="sm"
-                onClick={() => setActiveModule(module.id as ModuleType)}
-                className={`${activeModule === module.id ? `bg-${module.color} text-white` : ''} transition-all duration-200`}
+                onClick={() => setActiveModule('overview')}
+                className={`${activeModule === 'overview' ? 'bg-gradient-primary text-white' : ''} whitespace-nowrap`}
               >
-                <module.icon className="w-4 h-4 mr-2" />
-                {module.name}
+                Overview
               </Button>
-            ))}
+              {modules.map((module) => (
+                <Button
+                  key={module.id}
+                  variant={activeModule === module.id ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => setActiveModule(module.id as ModuleType)}
+                  className={`${activeModule === module.id ? `bg-${module.color} text-white` : ''} transition-all duration-200 whitespace-nowrap`}
+                >
+                  <module.icon className="w-4 h-4 mr-2" />
+                  {module.name}
+                </Button>
+              ))}
+            </div>
           </div>
         </div>
       </header>

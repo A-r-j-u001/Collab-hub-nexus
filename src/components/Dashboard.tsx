@@ -130,7 +130,7 @@ const Dashboard = ({ onBack }: DashboardProps) => {
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back
               </Button>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 min-w-0">
                 <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
                   <Video className="w-5 h-5 text-white" />
                 </div>

@@ -146,26 +146,26 @@ const MeetingModule = () => {
         <CardContent>
           <div className="space-y-4">
             {upcomingMeetings.map((meeting, index) => (
-              <div key={index} className="flex items-center justify-between p-4 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
-                <div className="flex items-center space-x-4">
-                  <div className="w-10 h-10 bg-meeting rounded-lg flex items-center justify-center">
+              <div key={index} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
+                <div className="flex items-start sm:items-center space-x-4 mb-3 sm:mb-0 w-full sm:w-auto">
+                  <div className="w-10 h-10 bg-meeting rounded-lg flex items-center justify-center flex-shrink-0">
                     <Video className="w-5 h-5 text-white" />
                   </div>
-                  <div>
-                    <h4 className="font-medium">{meeting.title}</h4>
-                    <p className="text-sm text-muted-foreground flex items-center">
-                      <Clock className="w-4 h-4 mr-1" />
-                      {meeting.time} • {meeting.participants} participants
+                  <div className="min-w-0">
+                    <h4 className="font-medium truncate">{meeting.title}</h4>
+                    <p className="text-sm text-muted-foreground flex items-center truncate">
+                      <Clock className="w-4 h-4 mr-1 flex-shrink-0" />
+                      <span className="truncate">{meeting.time} • {meeting.participants} participants</span>
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 w-full sm:w-auto">
                   {meeting.status === 'starting' && (
                     <Badge className="bg-green-100 text-green-800">Starting Soon</Badge>
                   )}
-                  <Button 
-                    size="sm" 
-                    className="bg-meeting hover:bg-meeting/90"
+                  <Button
+                    size="sm"
+                    className="bg-meeting hover:bg-meeting/90 w-full sm:w-auto"
                     onClick={() => setInMeeting(true)}
                   >
                     Join
@@ -189,23 +189,23 @@ const MeetingModule = () => {
         <CardContent>
           <div className="space-y-4">
             {recentMeetings.map((meeting, index) => (
-              <div key={index} className="flex items-center justify-between p-4 rounded-lg border hover:bg-secondary/30 transition-colors">
-                <div className="flex items-center space-x-4">
-                  <div className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center">
+              <div key={index} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-lg border hover:bg-secondary/30 transition-colors">
+                <div className="flex items-start sm:items-center space-x-4 mb-3 sm:mb-0 w-full sm:w-auto">
+                  <div className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center flex-shrink-0">
                     <Video className="w-5 h-5 text-muted-foreground" />
                   </div>
-                  <div>
-                    <h4 className="font-medium">{meeting.title}</h4>
-                    <p className="text-sm text-muted-foreground">
-                      {meeting.date} • {meeting.duration} • {meeting.participants} participants
+                  <div className="min-w-0">
+                    <h4 className="font-medium truncate">{meeting.title}</h4>
+                    <p className="text-sm text-muted-foreground truncate">
+                      <span className="truncate">{meeting.date} • {meeting.duration} • {meeting.participants} participants</span>
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Button variant="outline" size="sm">
+                <div className="flex flex-col sm:flex-row sm:items-center items-stretch space-y-2 sm:space-y-0 sm:space-x-2 w-full sm:w-auto">
+                  <Button variant="outline" size="sm" className="w-full sm:w-auto">
                     Recording
                   </Button>
-                  <Button variant="outline" size="sm">
+                  <Button variant="outline" size="sm" className="w-full sm:w-auto">
                     Notes
                   </Button>
                 </div>

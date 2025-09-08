@@ -121,3 +121,19 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
 }
+
+/* Hide scrollbars globally but keep scroll functionality */
+/* WebKit browsers */
+*::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+/* Firefox */
+* {
+  scrollbar-width: none; /* hides scrollbar */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+/* Make sure scrollable areas still can be scrolled via touch */
+html, body {
+  -webkit-overflow-scrolling: touch;
+}

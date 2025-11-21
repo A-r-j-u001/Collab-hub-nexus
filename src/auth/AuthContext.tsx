@@ -14,6 +14,7 @@ interface AuthContextType {
     login: () => void;
     logout: () => void;
     isLoading: boolean;
+    isAuthenticated: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -29,7 +30,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             fetchUserProfile(tokenResponse.access_token);
         },
         onError: (error) => console.error('Login Failed:', error),
-        scope: 'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/drive.appdata',
+        scope: 'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/drive.appdata https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events',
     });
 
     const fetchUserProfile = async (token: string) => {
@@ -56,7 +57,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, accessToken, login, logout, isLoading }}>
+        <AuthContext.Provider value={{ user, accessToken, login, logout, isLoading, isAuthenticated: !!user }}>
             {children}
         </AuthContext.Provider>
     );

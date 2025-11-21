@@ -4,72 +4,41 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
-import { Upload, Video, FileText, Image, Play, Download, Eye, Share2, Search, Filter, Plus, BarChart3 } from "lucide-react";
+import { Upload, Video, FileText, Image, Play, Download, Eye, Share2, Search, Filter, Plus, BarChart3, Trash2 } from "lucide-react";
+import { useStore, ContentItem } from "@/lib/store";
 
 const ContentModule = () => {
-  const [selectedContent, setSelectedContent] = useState<number | null>(null);
+  const { contentItems, addContentItem, deleteContentItem } = useStore();
   const [showUpload, setShowUpload] = useState(false);
 
-  const content = [
-    {
-      id: 1,
-      title: "Product Demo Walkthrough",
-      type: "video",
-      thumbnail: "/placeholder.svg",
-      duration: "12:34",
-      size: "45 MB",
-      uploadDate: "2 days ago",
-      views: 124,
-      downloads: 18,
-      status: "published",
-      tags: ["demo", "product", "walkthrough"]
-    },
-    {
-      id: 2,
-      title: "Q4 Financial Report",
-      type: "document",
-      thumbnail: "/placeholder.svg",
-      pages: 24,
-      size: "8.2 MB",
-      uploadDate: "1 week ago",
-      views: 89,
-      downloads: 34,
-      status: "published",
-      tags: ["finance", "report", "quarterly"]
-    },
-    {
-      id: 3,
-      title: "Team Building Event Photos",
-      type: "image",
-      thumbnail: "/placeholder.svg",
-      count: 48,
-      size: "156 MB",
-      uploadDate: "2 weeks ago",
-      views: 267,
-      downloads: 12,
-      status: "published",
-      tags: ["team", "event", "photos"]
-    },
-    {
-      id: 4,
-      title: "Client Presentation Draft",
-      type: "document",
-      thumbnail: "/placeholder.svg",
-      pages: 18,
-      size: "12.1 MB",
-      uploadDate: "3 days ago",
-      views: 45,
-      downloads: 8,
-      status: "draft",
-      tags: ["presentation", "client", "draft"]
-    }
-  ];
+  // Upload state
+  const [uploadTitle, setUploadTitle] = useState("");
+  const [uploadType, setUploadType] = useState<'video' | 'document'>('document');
+  const [uploadUrl, setUploadUrl] = useState("");
+
+  const handleUpload = () => {
+    if (!uploadTitle) return;
+
+    const newItem: ContentItem = {
+      id: crypto.randomUUID(),
+      title: uploadTitle,
+      type: uploadType,
+      url: uploadUrl || "#",
+      uploadDate: new Date().toISOString().split('T')[0]
+    };
+
+    addContentItem(newItem);
+    setShowUpload(false);
+    setUploadTitle("");
+    setUploadUrl("");
+    setUploadType("document");
+  };
 
   const stats = {
-    totalFiles: 156,
-    totalSize: "2.4 GB",
-    monthlyViews: 1247,
-    monthlyDownloads: 189
+    totalFiles: contentItems.length,
+    totalSize: "2.4 GB", // Mock
+    monthlyViews: 1247, // Mock
+    monthlyDownloads: 189 // Mock
   };
 
   if (showUpload) {
@@ -79,8 +48,8 @@ const ContentModule = () => {
           <Button variant="ghost" onClick={() => setShowUpload(false)}>
             ← Back to Content
           </Button>
-          <Button className="bg-content hover:bg-content/90">
-            Save Draft
+          <Button className="bg-content hover:bg-content/90 text-white" onClick={handleUpload}>
+            Save Content
           </Button>
         </div>
 
@@ -102,62 +71,36 @@ const ContentModule = () => {
               </Button>
             </div>
 
-            {/* Upload Progress */}
-            <div className="space-y-4">
-              <h4 className="font-medium">Uploading Files</h4>
-              <div className="space-y-3">
-                <div className="flex items-center space-x-4 p-3 bg-secondary/30 rounded-lg">
-                  <Video className="w-5 h-5 text-content" />
-                  <div className="flex-1">
-                    <p className="font-medium">presentation-final.mp4</p>
-                    <Progress value={75} className="mt-1" />
-                  </div>
-                  <span className="text-sm text-muted-foreground">75%</span>
-                </div>
-                <div className="flex items-center space-x-4 p-3 bg-secondary/30 rounded-lg">
-                  <FileText className="w-5 h-5 text-notes" />
-                  <div className="flex-1">
-                    <p className="font-medium">requirements-doc.pdf</p>
-                    <Progress value={100} className="mt-1" />
-                  </div>
-                  <span className="text-sm text-green-600">Complete</span>
-                </div>
-              </div>
-            </div>
-
             {/* Content Details */}
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-4">
                 <div>
                   <label className="text-sm font-medium block mb-2">Title</label>
-                  <Input placeholder="Enter content title..." />
+                  <Input
+                    placeholder="Enter content title..."
+                    value={uploadTitle}
+                    onChange={(e) => setUploadTitle(e.target.value)}
+                  />
                 </div>
                 <div>
-                  <label className="text-sm font-medium block mb-2">Description</label>
-                  <Input placeholder="Brief description..." />
-                </div>
-                <div>
-                  <label className="text-sm font-medium block mb-2">Tags</label>
-                  <Input placeholder="Add tags separated by commas..." />
+                  <label className="text-sm font-medium block mb-2">URL (Optional)</label>
+                  <Input
+                    placeholder="External URL..."
+                    value={uploadUrl}
+                    onChange={(e) => setUploadUrl(e.target.value)}
+                  />
                 </div>
               </div>
               <div className="space-y-4">
                 <div>
-                  <label className="text-sm font-medium block mb-2">Visibility</label>
-                  <select className="w-full px-3 py-2 border rounded-md">
-                    <option>Public - Everyone can view</option>
-                    <option>Team - Team members only</option>
-                    <option>Private - Only me</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="text-sm font-medium block mb-2">Category</label>
-                  <select className="w-full px-3 py-2 border rounded-md">
-                    <option>Presentations</option>
-                    <option>Documents</option>
-                    <option>Videos</option>
-                    <option>Images</option>
-                    <option>Other</option>
+                  <label className="text-sm font-medium block mb-2">Type</label>
+                  <select
+                    className="w-full px-3 py-2 border rounded-md"
+                    value={uploadType}
+                    onChange={(e) => setUploadType(e.target.value as 'video' | 'document')}
+                  >
+                    <option value="document">Document</option>
+                    <option value="video">Video</option>
                   </select>
                 </div>
               </div>
@@ -179,7 +122,7 @@ const ContentModule = () => {
           </Badge>
         </div>
         <div className="flex items-center space-x-2">
-          <div className="relative">
+          <div className="relative hidden md:block">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
             <Input placeholder="Search content..." className="pl-10 w-64" />
           </div>
@@ -187,8 +130,8 @@ const ContentModule = () => {
             <Filter className="w-4 h-4 mr-2" />
             Filter
           </Button>
-          <Button 
-            className="bg-content hover:bg-content/90"
+          <Button
+            className="bg-content hover:bg-content/90 text-white"
             onClick={() => setShowUpload(true)}
           >
             <Plus className="w-4 h-4 mr-2" />
@@ -255,95 +198,58 @@ const ContentModule = () => {
 
       {/* Content Grid */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {content.map((item) => (
-          <Card key={item.id} className="group hover:shadow-medium transition-all duration-300 cursor-pointer hover:-translate-y-1">
-            <CardContent className="p-0">
-              {/* Thumbnail */}
-              <div className="relative aspect-video bg-secondary rounded-t-lg overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-content/20 to-content/5 flex items-center justify-center">
-                  {item.type === 'video' && <Video className="w-12 h-12 text-content" />}
-                  {item.type === 'document' && <FileText className="w-12 h-12 text-notes" />}
-                  {item.type === 'image' && <Image className="w-12 h-12 text-social" />}
-                </div>
-                
-                {/* Status Badge */}
-                <div className="absolute top-2 right-2">
-                  <Badge className={item.status === 'published' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}>
-                    {item.status}
-                  </Badge>
+        {contentItems.length === 0 ? (
+          <div className="col-span-full text-center py-10 text-muted-foreground">
+            <p>No content uploaded yet.</p>
+          </div>
+        ) : (
+          contentItems.map((item) => (
+            <Card key={item.id} className="group hover:shadow-medium transition-all duration-300 cursor-pointer hover:-translate-y-1">
+              <CardContent className="p-0">
+                {/* Thumbnail */}
+                <div className="relative aspect-video bg-secondary rounded-t-lg overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-content/20 to-content/5 flex items-center justify-center">
+                    {item.type === 'video' && <Video className="w-12 h-12 text-content" />}
+                    {item.type === 'document' && <FileText className="w-12 h-12 text-notes" />}
+                  </div>
+
+                  {/* Status Badge */}
+                  <div className="absolute top-2 right-2">
+                    <Badge className="bg-green-100 text-green-800">
+                      Published
+                    </Badge>
+                  </div>
                 </div>
 
-                {/* Type-specific info */}
-                <div className="absolute bottom-2 left-2">
-                  {item.type === 'video' && (
-                    <Badge variant="secondary" className="text-xs">
-                      {item.duration}
-                    </Badge>
-                  )}
-                  {item.type === 'document' && (
-                    <Badge variant="secondary" className="text-xs">
-                      {item.pages} pages
-                    </Badge>
-                  )}
-                  {item.type === 'image' && (
-                    <Badge variant="secondary" className="text-xs">
-                      {item.count} photos
-                    </Badge>
-                  )}
-                </div>
-              </div>
+                {/* Content Info */}
+                <div className="p-4">
+                  <h4 className="font-semibold mb-2 line-clamp-2">{item.title}</h4>
+                  <div className="flex items-center justify-between text-sm text-muted-foreground mb-3">
+                    <span>{item.uploadDate}</span>
+                  </div>
 
-              {/* Content Info */}
-              <div className="p-4">
-                <h4 className="font-semibold mb-2 line-clamp-2">{item.title}</h4>
-                <div className="flex items-center justify-between text-sm text-muted-foreground mb-3">
-                  <span>{item.uploadDate}</span>
-                  <span>{item.size}</span>
+                  {/* Actions */}
+                  <div className="flex space-x-2 mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Button size="sm" variant="outline" className="flex-1">
+                      <Play className="w-4 h-4 mr-1" />
+                      View
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        deleteContentItem(item.id);
+                      }}
+                    >
+                      <Trash2 className="w-4 h-4 text-destructive" />
+                    </Button>
+                  </div>
                 </div>
-                
-                {/* Tags */}
-                <div className="flex flex-wrap gap-1 mb-3">
-                  {item.tags.slice(0, 2).map((tag, index) => (
-                    <Badge key={index} variant="outline" className="text-xs">
-                      {tag}
-                    </Badge>
-                  ))}
-                  {item.tags.length > 2 && (
-                    <Badge variant="outline" className="text-xs">
-                      +{item.tags.length - 2} more
-                    </Badge>
-                  )}
-                </div>
-
-                {/* Stats */}
-                <div className="flex items-center justify-between text-sm text-muted-foreground">
-                  <span className="flex items-center">
-                    <Eye className="w-4 h-4 mr-1" />
-                    {item.views}
-                  </span>
-                  <span className="flex items-center">
-                    <Download className="w-4 h-4 mr-1" />
-                    {item.downloads}
-                  </span>
-                </div>
-
-                {/* Actions */}
-                <div className="flex space-x-2 mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <Button size="sm" variant="outline" className="flex-1">
-                    <Play className="w-4 h-4 mr-1" />
-                    View
-                  </Button>
-                  <Button size="sm" variant="outline">
-                    <Share2 className="w-4 h-4" />
-                  </Button>
-                  <Button size="sm" variant="outline">
-                    <Download className="w-4 h-4" />
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+              </CardContent>
+            </Card>
+          ))
+        )}
       </div>
     </div>
   );

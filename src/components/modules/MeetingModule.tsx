@@ -3,24 +3,39 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Video, VideoOff, Mic, MicOff, Monitor, Users, Calendar, Clock, Plus, Phone } from "lucide-react";
+import { Video, VideoOff, Mic, MicOff, Monitor, Users, Calendar, Clock, Plus, Phone, Trash2 } from "lucide-react";
+import { useStore, Meeting } from "@/lib/store";
 
 const MeetingModule = () => {
+  const { meetings, addMeeting, deleteMeeting } = useStore();
   const [inMeeting, setInMeeting] = useState(false);
   const [videoOn, setVideoOn] = useState(true);
   const [audioOn, setAudioOn] = useState(true);
+  const [showSchedule, setShowSchedule] = useState(false);
 
-  const upcomingMeetings = [
-    { title: "Weekly Standup", time: "10:00 AM", participants: 8, status: "starting" },
-    { title: "Client Presentation", time: "2:00 PM", participants: 12, status: "scheduled" },
-    { title: "Design Review", time: "4:30 PM", participants: 5, status: "scheduled" },
-  ];
+  // Schedule meeting state
+  const [newMeetingTitle, setNewMeetingTitle] = useState("");
+  const [newMeetingDate, setNewMeetingDate] = useState("");
+  const [newMeetingTime, setNewMeetingTime] = useState("");
 
-  const recentMeetings = [
-    { title: "Project Kickoff", date: "Yesterday", duration: "45 min", participants: 10 },
-    { title: "Team Sync", date: "2 days ago", duration: "30 min", participants: 6 },
-    { title: "Client Check-in", date: "3 days ago", duration: "60 min", participants: 8 },
-  ];
+  const handleScheduleMeeting = () => {
+    if (!newMeetingTitle || !newMeetingDate || !newMeetingTime) return;
+
+    const newMeeting: Meeting = {
+      id: crypto.randomUUID(),
+      title: newMeetingTitle,
+      date: newMeetingDate,
+      time: newMeetingTime,
+      participants: [], // Mock participants
+      type: 'video'
+    };
+
+    addMeeting(newMeeting);
+    setShowSchedule(false);
+    setNewMeetingTitle("");
+    setNewMeetingDate("");
+    setNewMeetingTime("");
+  };
 
   if (inMeeting) {
     return (
@@ -46,10 +61,10 @@ const MeetingModule = () => {
                   <Users className="w-12 h-12 text-white" />
                 </div>
                 <p className="text-lg text-gray-300">Meeting in progress...</p>
-                <p className="text-sm text-gray-400">8 participants connected</p>
+                <p className="text-sm text-gray-400">You are the host</p>
               </div>
             </div>
-            
+
             {/* Meeting Controls */}
             <div className="flex items-center justify-center space-x-4">
               <Button
@@ -97,8 +112,8 @@ const MeetingModule = () => {
             </div>
             <h3 className="font-semibold mb-2">Start Instant Meeting</h3>
             <p className="text-sm text-muted-foreground mb-4">Begin a meeting right now</p>
-            <Button 
-              className="w-full bg-meeting hover:bg-meeting/90"
+            <Button
+              className="w-full bg-meeting hover:bg-meeting/90 text-white"
               onClick={() => setInMeeting(true)}
             >
               Start Now
@@ -113,8 +128,8 @@ const MeetingModule = () => {
             </div>
             <h3 className="font-semibold mb-2">Schedule Meeting</h3>
             <p className="text-sm text-muted-foreground mb-4">Plan for later</p>
-            <Button variant="outline" className="w-full">
-              Schedule
+            <Button variant="outline" className="w-full" onClick={() => setShowSchedule(!showSchedule)}>
+              {showSchedule ? "Cancel" : "Schedule"}
             </Button>
           </CardContent>
         </Card>
@@ -128,11 +143,42 @@ const MeetingModule = () => {
             <p className="text-sm text-muted-foreground mb-4">Enter meeting ID</p>
             <div className="flex space-x-2">
               <Input placeholder="Meeting ID" className="flex-1" />
-              <Button>Join</Button>
+              <Button onClick={() => setInMeeting(true)}>Join</Button>
             </div>
           </CardContent>
         </Card>
       </div>
+
+      {/* Schedule Form */}
+      {showSchedule && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Schedule a New Meeting</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-4 md:grid-cols-3">
+              <Input
+                placeholder="Meeting Title"
+                value={newMeetingTitle}
+                onChange={(e) => setNewMeetingTitle(e.target.value)}
+              />
+              <Input
+                type="date"
+                value={newMeetingDate}
+                onChange={(e) => setNewMeetingDate(e.target.value)}
+              />
+              <Input
+                type="time"
+                value={newMeetingTime}
+                onChange={(e) => setNewMeetingTime(e.target.value)}
+              />
+            </div>
+            <div className="mt-4 flex justify-end">
+              <Button onClick={handleScheduleMeeting}>Confirm Schedule</Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Upcoming Meetings */}
       <Card>
@@ -141,76 +187,47 @@ const MeetingModule = () => {
             <Clock className="w-5 h-5 mr-2 text-meeting" />
             Upcoming Meetings
           </CardTitle>
-          <CardDescription>Your scheduled meetings for today</CardDescription>
+          <CardDescription>Your scheduled meetings</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {upcomingMeetings.map((meeting, index) => (
-              <div key={index} className="flex items-center justify-between p-4 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
-                <div className="flex items-center space-x-4">
-                  <div className="w-10 h-10 bg-meeting rounded-lg flex items-center justify-center">
-                    <Video className="w-5 h-5 text-white" />
+            {meetings.length === 0 ? (
+              <p className="text-muted-foreground text-center py-4">No upcoming meetings.</p>
+            ) : (
+              meetings.map((meeting) => (
+                <div key={meeting.id} className="flex items-center justify-between p-4 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-10 h-10 bg-meeting rounded-lg flex items-center justify-center">
+                      <Video className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <h4 className="font-medium">{meeting.title}</h4>
+                      <p className="text-sm text-muted-foreground flex items-center">
+                        <Clock className="w-4 h-4 mr-1" />
+                        {meeting.date} at {meeting.time}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="font-medium">{meeting.title}</h4>
-                    <p className="text-sm text-muted-foreground flex items-center">
-                      <Clock className="w-4 h-4 mr-1" />
-                      {meeting.time} • {meeting.participants} participants
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-2">
-                  {meeting.status === 'starting' && (
-                    <Badge className="bg-green-100 text-green-800">Starting Soon</Badge>
-                  )}
-                  <Button 
-                    size="sm" 
-                    className="bg-meeting hover:bg-meeting/90"
-                    onClick={() => setInMeeting(true)}
-                  >
-                    Join
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Recent Meetings */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center">
-            <Users className="w-5 h-5 mr-2 text-muted-foreground" />
-            Recent Meetings
-          </CardTitle>
-          <CardDescription>View recordings and notes from past meetings</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {recentMeetings.map((meeting, index) => (
-              <div key={index} className="flex items-center justify-between p-4 rounded-lg border hover:bg-secondary/30 transition-colors">
-                <div className="flex items-center space-x-4">
-                  <div className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center">
-                    <Video className="w-5 h-5 text-muted-foreground" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium">{meeting.title}</h4>
-                    <p className="text-sm text-muted-foreground">
-                      {meeting.date} • {meeting.duration} • {meeting.participants} participants
-                    </p>
+                  <div className="flex items-center space-x-2">
+                    <Button
+                      size="sm"
+                      className="bg-meeting hover:bg-meeting/90 text-white"
+                      onClick={() => setInMeeting(true)}
+                    >
+                      Join
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="text-destructive"
+                      onClick={() => deleteMeeting(meeting.id)}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
                   </div>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Button variant="outline" size="sm">
-                    Recording
-                  </Button>
-                  <Button variant="outline" size="sm">
-                    Notes
-                  </Button>
-                </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </CardContent>
       </Card>
